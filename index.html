@@ -21,7 +21,7 @@
     <script async type="text/javascript" src="js/lastsession.js"></script>
 </head>
 
-<body onload="">
+<body>
     <div id="piano">
         <div id="btns">            
             <div id="assistd" class="text" onclick="piano.assist()">Key assist Off</div>            
@@ -30,19 +30,6 @@
         <div id="black"></div>
         <div id="audio" onerror="location.reload()"></div>
     </div>    
-    <script>
-        var triedCallingAssist = 0;
-        function callPianoAssist() {
-            try {
-                piano.assist();
-                console.log("[ + ] Successfully set piano assist!");
-            }
-            catch (err) {
-                if (++triedCallingAssist < 50) window.setTimeout(callPianoAssist, 500);
-                console.warn("index.html[callPianoAssist()]:" + err.message);
-            }
-        }
-    </script>
 </body>
 
 </html>
