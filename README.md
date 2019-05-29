@@ -1,3 +1,5 @@
+Fork of the repository https://github.com/otanim/virtual-piano, to make it work with colemak layout. Some features were removed to make it simplistic. I believe the outcome is good but the code was not that intuitive, will try to convert to somewhat readable code. If you'd like to add in some features 'fork' this repository and then send me pull requests. I am planning to move towards simplifying the ui, I mean what's left of it and cleaning up the code.
+
 # VirtualPiano
 Browser based virtual piano, based on javascript and HTML5.  
 [**Here**](http://otanim.github.io/virtual-piano/) you can try out **Virtul Piano** online.
