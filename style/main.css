@@ -10,7 +10,8 @@ body {
     -webkit-user-select: none;
     user-select: none;
     margin: 35px 0 0 0;
-    background: url(../style/img/bk/5.jpg);
+    background: url("../images/bg1.jpg");    
+    background-size: cover;
     cursor: default;
 }
 

@@ -1,79 +1,93 @@
-﻿function Windows_FNC() {
-    this.coos = ["0px", "5px"];
-    this.close = function (n, t, i) {
-        $("expert").checked && ($("expert").checked = !1, loc.set("exp", ""));
-        rec.exp();
-        this.viewer(n, 1);
-        this.stop();
-        $("sheet_stop").style.visibility = "hidden";
-        $("sheet_stop_sep").style.visibility = "hidden";
-        $("sheet_choose").selectedIndex = 0;
-        $("s1").value = "";
-        $("win").style.left = t;
-        $("win").style.top = i;
-        n == "recorder" && ($("composition").value = "")
-    };
-    this.stop = function () {
-        piano.stp = !0;
-        $("sheet_stop").style.visibility = "hidden";
-        $("sheet_stop_sep").style.visibility = "hidden"
-    };
-    this.viewer = function (n, t) {
-        var i = $("win"),
-            r = $(n);
-        i.style.visibility == "visible" && (n == loc.get("win").split(",")[1] || t) ? (i.style.visibility = "hidden", $("hh_vis").style.visibility = "hidden", $("hh_sep").style.visibility = "hidden", $("recplay").style.visibility = "hidden", $("expbar").style.visibility = "hidden", $("rec_tb2").style.visibility = "hidden", $("rec_tb3").style.visibility = "hidden", $("sheet_choose").style.visibility = "hidden", $("sheet_stop").style.visibility = "hidden", $("sheet_stop_sep").style.visibility = "hidden") : (i.style.visibility == "hidden" || n != loc.get("win").split(",")[1]) && (i.style.visibility = "visible", piano.play_pause && ($("sheet_stop").style.visibility = "visible", $("sheet_stop_sep").style.visibility = "visible"), n == "sheet" ? (n != loc.get("win").split(",")[1] && ($("sheet_choose").selectedIndex = rest.Null("sheet_choose") ? loc.get("sheet_choose") : 0, trans.choose()), $("s1").style.top = "62px", $("s1").style.height = "325px", $("s1").readOnly = !0, $("rec_bkg_title").innerHTML = "Sheets", $("hh_vis").style.visibility = "hidden", $("hh_sep").style.visibility = "hidden", $("recplay").style.visibility = "hidden", $("expbar").style.visibility = "hidden", $("rec_tb2").style.visibility = "hidden", $("rec_tb3").style.visibility = "hidden", $("sheet_choose").style.visibility = "visible") : (n != loc.get("win").split(",")[1] && (piano.stp = !0, $("s1").value = ""), $("s1").style.top = "92px", $("s1").style.height = "270px", $("s1").readOnly = !1, $("rec_bkg_title").innerHTML = "Recorder", $("expert").checked && ($("hh_vis").style.visibility = "visible", $("hh_sep").style.visibility = "visible"), $("recplay").style.visibility = "visible", $("expbar").style.visibility = "visible", $("rec_tb2").style.visibility = "visible", $("rec_tb3").style.visibility = "visible", $("sheet_choose").style.visibility = "hidden"));
-        loc.set("win", [i.style.visibility, n, i.style.left, i.style.top])
-    };
-    this.hider = function () {
-        $("sheet_play").value = "► Play";
-        $("sheet_stop").style.visibility = "hidden";
-        $("sheet_stop_sep").style.visibility = "hidden"
+﻿function Piano() {
+  this.isMouseDown = !1;
+  this.play_cycle = !1;
+  this.play_pause = !1;
+  this.stp_cycle = !1;
+  this.record = !1;
+  this.stp = !1;
+  this.as = !1;
+  this.b = !1;
+  this.chord = [""];
+  this.time = [0];
+  this.indexes = [0];
+  this.msx;
+  this.t1 = 0;
+  this.t2 = 0;
+  this.nmb = 1;
+  this.col = 0;
+  this.play_count = 0;
+  this.deff = 0;
+  this.defff = 0;
+  this.default = function() {
+    this.play_count = 0;
+    this.indexes = [0];
+    this.chord = [""];
+    this.time = [0];
+    this.nmb = 1;
+    this.b = !1
+  };
+  this.chkdsk = function(n, t) {
+    this.isMouseDown == !0 ? this.music(n, t) : this.delayer(n, t + 1)
+  };
+  this.timer = function() {
+    this.t1 = this.t2;
+    var n = new Date;
+    return this.t2 = n.getMinutes() * 6e4 + n.getSeconds() * 1e3 + n.getMilliseconds(), this.b ? this.t2 - this.t1 : (this.b = !0, 0)
+  };
+  this.music = function(elementId, t) {
+    var element = $(elementId);
+    element.currentTime = 0;
+    element.play();
+    this.delayer(elementId, t);
+    this.record && (this.chord[this.chord.length] = elementId, this.time[this.time.length] = this.time[this.time.length - 1] + this.timer())
+  };
+  this.timereset = function(n, t) {
+    for (var i = t + 1; i < n.length; i++) n[i] = n[i] - n[t];
+    for (i = 0; i <= t; i++) n[i] = 0;
+    return n
+  };
+  this.recplay = function(n) {
+    function r(i, r, u, f) {
+      setTimeout(function() {
+        if (piano.stp && !n) piano.stp_cycle || (win_fnc.hider(), select("s1", -1), piano.default(), piano.stp_cycle = !0, piano.chord = [""]);
+        else if (piano.play_pause && !n) piano.play_cycle || (piano.nmb = piano.play_count + 1, piano.chord = piano.msx[1], piano.indexes = piano.msx[2], piano.time = piano.timereset(piano.msx[0], piano.nmb), piano.play_cycle = !0);
+        else if (!piano.play_pause && !piano.record) try {
+          piano.deff == u && (n || select("s1", f - 1, f), r[0] == "a" ? piano.music(r, 1) : piano.music(r, 3), piano.play_count++, piano.play_count == piano.nmb - 1 && (n ? t.value = "● Record" : (win_fnc.hider(), select("s1", -1)), piano.play_pause = !1, piano.default(), piano.b = !1))
+        } catch (i) {}
+      }, i)
     }
-}
-
-function Recorder() {
-    this.tmp = "";
-    var n = $("s1");
-    this.exp = function () {
-        var n = $("expert");
-        n.checked ? ($("hh_vis").style.visibility = "hidden", $("hh_sep").style.visibility = "hidden", n.checked = !1, loc.set("exp", "")) : ($("hh_vis").style.visibility = "visible", $("hh_sep").style.visibility = "visible", n.checked = !0, loc.set("exp", "x"))
-    };
-    this.btn = function (n) {
-        var t = select("s1"),
-            i = $("s1");
-        i.value = i.value.substring(0, t[0]) + n + i.value.substring(t[1]);
-        select("s1", t[0] + 1, t[0] + 1)
-    };
-    this.erase = function () {
-        var t = select("s1"),
-            n = $("s1");
-        n.value = n.value.substring(0, t[0]) + n.value.substring(t[1])
-    };
-    this.copy = function () {
-        var n = select("s1"),
-            t = $("s1");
-        this.tmp = t.value.substring(n[0], n[1])
-    };
-    this.paste = function () {
-        var n = select("s1"),
-            t = $("s1");
-        t.value = t.value.substring(0, n[0]) + this.tmp + t.value.substring(n[1]);
-        select("s1", n[0] + this.tmp.length, n[0] + this.tmp.length)
-    };
-    this.brackets = function (n) {
-        var t = select("s1"),
-            u = [
-                ["[", "]"],
-                ["{", "}"]
-            ],
-            i = $("s1"),
-            r;
-        if (t[0] == t[1]) i.value = i.value.lastIndexOf(u[n][0]) != -1 && i.value.lastIndexOf(u[n][1], t[0]) > i.value.lastIndexOf(u[n][0], t[0]) || i.value.lastIndexOf(u[n][0], t[0]) == -1 ? i.value.substring(0, t[0]) + u[n][0] + i.value.substring(t[1]) : i.value.substring(0, t[0]) + u[n][1] + i.value.substring(t[1]), select("s1", t[1] + 1, t[1] + 1);
-        else {
-            for (r = 0; r < 2; r++) i.value = i.value.substring(0, t[r] + r) + u[n][r] + i.value.substring(t[r] + r);
-            select("s1", t[1] + 2, t[1] + 2)
-        }
+    var t = $("recplay"),
+      i = $("sheet_play");
+    if (this.deff++, n) t.value == "● Record" ? ($("s1").placeholder = "Recording...", t.value = "■ Stop", i.focus(), $("s1").value = "", win_fnc.hider(), this.record = !0) : (t.value = "● Record", $("s1").placeholder = "Sheet", retrans.compile(), this.default(), this.record = !1);
+    else if (this.record && (retrans.compile(), this.default(), this.record = !1), $("s1").value != "" && (i.value == "▌▌ Pause" ? (i.value = "► Play", this.play_pause = !0) : (i.value = "▌▌ Pause", t.value == "■ Stop" && (t.value = "● Record"), this.play_pause = !1, this.play_cycle = !1, this.stp_cycle = !1, this.stp = !1), $("sheet_stop").style.visibility = "visible", $("sheet_stop_sep").style.visibility = "visible", this.chord.length <= 1 && (this.msx = trans.compile(), this.time = this.msx[0], this.chord = this.msx[1], this.indexes = this.msx[2])), !this.play_pause)
+      while (this.nmb != this.chord.length) r(this.time[this.nmb], this.chord[this.nmb], this.deff, this.indexes[this.nmb]), this.nmb++
+  };
+  this.assist = function() {
+    var n;
+    if (this.as) {
+      for ($("assistd").innerHTML = "Key assist Off", n = 0; n < notes.w_n.length; n++) $("a" + notes.w_c[n] + "d").innerHTML = "";
+      for (n = 0; n < notes.b_n_.length; n++) $("b" + notes.b_c[n] + "d").innerHTML = "";
+      this.as = !1;
+      loc.set("assist", "")
+    } else {
+      for ($("assistd").innerHTML = "Key assist On", n = 0; n < notes.w_c.length; n++) $("a" + notes.w_c[n] + "d").innerHTML = "<br/><br/><br/><br/><br/><br/>" + notes.w_n[n];
+      for (n = 0; n < notes.b_c.length; n++) $("b" + notes.b_c[n] + "d").innerHTML = "<br/>" + notes.b_n_[n] + "<br/>+<br/>&#8679";
+      this.as = !0;
+      loc.set("assist", "x")
     }
+  };
+  this.styler = function() {
+    this.col++;
+    this.col == 8 && (this.col = 0);
+    document.body.style.backgroundImage = "url(style/img/bk/" + this.col + ".jpg)";
+    loc.set("bg", String(this.col))
+  };
+  this.delayer = function(n, t) {
+    var i = $(n + "d");
+    i.style.backgroundImage = notes.styles[t];
+    setTimeout(function() {
+      i.style.backgroundImage = t < 3 ? notes.styles[0] : notes.styles[5]
+    }, 150)
+  }
 }
-var win_fnc = new Windows_FNC,
-    rec = new Recorder;
+var piano = new Piano;
