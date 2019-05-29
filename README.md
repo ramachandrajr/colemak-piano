@@ -5,7 +5,7 @@ Below is the docs page from [otanim/virtual-piano](http://otanim.github.io/virtu
 
 # VirtualPiano
 Browser based virtual piano, based on javascript and HTML5.  
-[**Here**](http://otanim.github.io/virtual-piano/) you can try out **Virtul Piano** online.
+[**Here**](https://ramachandrajr.github.io/colemak-virtual-piano/) you can try out **Virtul Piano** online.
 
 # About
 This is my first public project that I've created when I supposingly to learn JavaScript in 2014.  
