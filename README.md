@@ -21,7 +21,3 @@ The company **Cristal Magic Studio Ltd** which owns https://virtualpiano.net web
 ## Screenshots
 ### Piano
 ![alt text](https://raw.githubusercontent.com/ArmanYeghiazaryan/VirtualPiano/master/screenshots/piano.gif "Piano")
-### Sheets
-![alt text](https://raw.githubusercontent.com/ArmanYeghiazaryan/VirtualPiano/master/screenshots/sheets.gif "Sheets")
-### Recorder
-![alt text](https://raw.githubusercontent.com/ArmanYeghiazaryan/VirtualPiano/master/screenshots/recorder.gif "Recorder")
